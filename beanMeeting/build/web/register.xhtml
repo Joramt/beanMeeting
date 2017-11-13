@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Inscription</title>
+    </h:head>
+    <style>
+        .cmdlow:focus, .cmdhigh:focus{
+           outline:none;
+        }
+        .selectedwoman, .selectedwoman:hover, .selectedwoman:focus {
+            background-image: none !important;
+            background-color: #F98297 !important;
+            outline: none;
+            text-shadow: none;
+            color: #9C021D !important;
+        }
+
+        .selectedman, .selectedman:hover, .selectedman:focus {
+            background-image: none !important;
+            background-color: #6883D0 !important;
+            outline: none;
+            color: #001B69 !important;
+            text-shadow: none;
+        }
+
+        .opt:hover > .top {
+            opacity:0.75;
+        }
+
+        .selected:hover > .top {
+            opacity:1;
+
+        }
+
+        .selected > .top {
+            opacity:1;
+
+        }
+
+        .selected > .top > .price {
+            color:green;
+        }
+
+        .opt:hover > .top > .price {
+            color:green;
+        }
+        .opt {
+            text-align:center;
+            width:123%;
+        }
+        .opt > p {
+            text-align : left;
+            border-bottom: solid #000 1px;
+            background-color:rgba(0, 0, 0, 0.12);
+            margin:0;
+            padding:5px;
+        }
+        .top {
+            background-color:#000;
+            color:#fff;
+            font-size:70px;
+            position:relative;
+            opacity:0.5;
+        }        
+        .dollar {
+            position: absolute;
+            top:17px;
+            right:40px;
+            font-size:15px;
+        }
+        .closer {
+            right : 50px;
+        }
+        .checkbox {
+            width:100%;
+        }
+        .checkbox  > label  {
+            width: 100%;
+            margin: 10px 0 10px -15px;
+        }
+        
+        #secondform > .checkbox  > label  {
+            width: 100%;
+            margin: 0 0 0 -15px;
+        }
+        
+        #secondform > .checkbox {
+            padding-top:0px;
+        }
+
+
+    </style>
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <!--MENU-->
+        <ui:include src="menu.xhtml" />
+        <!--FIN MENU REVERT-->
+        <b:container>
+
+            <b:well>
+                <h1 id='pageTitle' style='text-align:center'>Devenez membre dès maintenant</h1>
+
+                <b:container style="width:45%; margin:0 auto;">
+
+                    <h:form rendered="#{totalUser.premiereEtape}" styleClass="form-horizontal" id="firstform" >
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText validator="fnamevalidator" id="fname" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" style="width:225%;" value="#{totalUser.unUser.familyname}"  placeholder="Nom">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="user"/>
+                                </f:facet>
+                                <p:message for="fname"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText validator="firstnameValidator" id="firstname" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" style="width:225%;" value="#{totalUser.unUser.firstname}"  placeholder="Prenom">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="user"/>
+                                </f:facet>
+                                <p:message for="firstname"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText required="true" requiredMessage="Vous devez renseigner ce champ"  id="mail" style="width:225%;" value="#{totalUser.unUser.email}"  placeholder="Mail">
+                                <f:facet name="prepend">
+                                    <h:outputText value="@"/>
+                                </f:facet>
+                                <f:validator validatorId="emailValidator" for="mail"/>
+                                <p:message for="mail"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText required="true" requiredMessage="Vous devez renseigner ce champ" id="nickname" style="width:225%;" value="#{totalUser.unUser.nickname}"  placeholder="Pseudo">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="user"/>
+                                </f:facet>
+                                <f:validator validatorId="connectNickname" for="nickname"/>
+                                <p:message for="nickname"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText required="true" requiredMessage="Vous devez renseigner ce champ"  id="pwd" style="width:225%;" value="#{totalUser.unUser.pwd}"  placeholder="Mot de passe">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="unlock-alt"/>
+                                </f:facet>
+                                <f:validator validatorId="passwordValidator" for="pwd"/>
+                                <p:message for="pwd"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0" style='margin: 0 auto 15px auto;'>
+                            <b:commandButton immediate="true" styleClass="#{totalUser.cssButtonH()}" id="man" action='#{totalUser.unUser.setGender("M")}' value="Homme" iconAwesome="male">  
+                                <f:param name="sexe" value="F" />  
+                            </b:commandButton> 
+                            <b:commandButton immediate="true" styleClass="#{totalUser.cssButtonF()}" action='#{totalUser.unUser.setGender("F")}' value="Femme" iconAwesome="female">  
+                                <f:param name="sexe" value="H" />  
+                            </b:commandButton> 
+                        </h:panelGrid >
+                        <p:message for="year"></p:message>
+                        <h:panelGrid styleClass="birth" columns="4">
+                            <h:outputText style="display:inline-block;margin-bottom: 15px;" value="Date de naissance"></h:outputText>
+                            <b:selectOneMenu  style="margin-left:30px !important; width:70%;" value="#{totalUser.unUser.day}">
+                                <f:selectItems value="#{listBean    .dayList}" var="day" 
+                                               itemLabel="#{day}" itemValue="#{day}" />
+                            </b:selectOneMenu>
+                            <b:selectOneMenu style="    width: 73%;;margin-right: 86px !important;margin-left:33px !important;" value="#{totalUser.unUser.month}">
+                                <f:selectItems value="#{listBean.monthList}" var="month" 
+                                               itemValue="#{month}" />
+                            </b:selectOneMenu>
+                            <b:selectOneMenu id="year" value="#{totalUser.unUser.year}">
+                                <f:selectItems value="#{listBean.yearList}" var="year" 
+                                               itemLabel="#{year}" itemValue="#{year}" />
+                                <f:validator for="year" validatorId="validatorYear"></f:validator>
+                            </b:selectOneMenu>
+                            
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0" style='position:relative;display: inline-block;width:49%;margin-left:-15px; margin-right:15px;'>
+
+                            <div  class='#{totalUser.cssButtonMbshipLow()}' id="low">
+                                <p style="text-align:center;">Membre regulier</p>
+                                    <div class='top'> 
+                                        <div class='price'>0</div>
+                                        <div class='dollar closer'>$ / mo </div>
+                                    </div>
+
+                                    <p>Envoyer des winks<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                    <p>Consulter un profil<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                    <p>Acces au favoris<i style="color:red;float:right; margin-top:2px;" class="fa fa-times"></i></p>
+                                    <p>Recherche de membres<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                    <p>Rechercher par localisation<i style="color:red;float:right; margin-top:2px;" class="fa fa-times"></i></p>
+                                    <p>Envoyer un message<i style="color:red;float:right; margin-top:2px;" class="fa fa-times"></i></p>
+                                    <p>Lire un message<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p></div>
+                                    <b:commandButton immediate="true" action="#{totalUser.unUser.setMembership_lvl(0)}" class="cmdlow" style="border:none; background-image:none; background-color:transparent; position:absolute; width:239px; top:30px; height:101px; left:0px;" value=""></b:commandButton>
+                            
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0" style='position:relative;display: inline-block;width:49%;'>
+                            <div  class='#{totalUser.cssButtonMbshipHigh()}' id="high">
+                                <p style="text-align:center;">Membre Premium</p>
+                                <div class='top'> 
+                                    <div class='price'>10</div>
+                                    <div class='dollar'>$ / mo</div>
+
+                                </div>
+
+                                <p>Envoyer des winks<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                <p>Consulter un profil<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                <p>Acces au favoris<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                <p>Recherche de membres<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                <p>Rechercher par localisation<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                <p>Envoyer un message<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p>
+                                <p>Lire un message<i style="color:green;float:right; margin-top:2px;" class="fa fa-check"></i></p></div>
+                            <b:commandButton immediate="true" action="#{totalUser.unUser.setMembership_lvl(1)}" class="cmdhigh" style="border:none; background-image:none; background-color:transparent; position:absolute; width:242px; top:30px; height:101px; left:0px;" value=""></b:commandButton>
+                            
+                        </h:panelGrid>
+                        <b:selectBooleanCheckbox value="#{totalUser.unUser.checkboxSelect}" caption="Oui, je veux être tenu au courant des dernières informations de lottoDating par mail"/>
+                        <b:commandButton action="#{totalUser.toggleEtapes(false, true)}"  style="width:105.6%; margin-left:-15px;" id="next1" look="success" iconAwesome="chevron-right" iconAlign="right" value="Étape 2"/>
+                    </h:form>
+                    
+                    <h:form rendered="#{totalUser.secondeEtape}"  styleClass="form-horizontal" id="secondform" >
+                        
+                        
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText id="strnumb" style="width:243.5%;" value="#{totalUser.uneInfo.streetnumber}"  placeholder="Numero de rue">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="hashtag"/>
+                                </f:facet>
+                                <p:message for="strnumb"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText id="strname" style="width:243.5%;" value="#{totalUser.uneInfo.streetname}"  placeholder="Nom de rue">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="road"/>
+                                </f:facet>
+                                <p:message for="strname"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" cellpadding="0">
+                            <b:inputText id="zipcode"  style="width:243.5%;" value="#{totalUser.uneInfo.zipcode}"  placeholder="Code Postal">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="envelope"/>
+                                </f:facet>
+                                <p:message for="zipcode"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:-15px;" value="Pays"></h:outputText>
+                            <b:selectOneMenu  style="margin-left:132px !important; width:156%;" value="#{totalUser.uneInfo.country}">
+                                <f:selectItem itemLabel="Canada" itemValue="Canada" />
+                                <f:selectItem itemLabel="France" itemValue="France" />
+                                <f:selectItem itemLabel="USA" itemValue="USA" />
+                                <f:selectItem itemLabel="Mexique" itemValue="Mexique" />
+                                <f:selectItem itemLabel="Chine" itemValue="Chine" />
+                                <f:selectItem itemLabel="Irlande" itemValue="Irlande" />
+                                <f:selectItem itemLabel="Japon" itemValue="Japon" />
+                                <f:selectItem itemLabel="Inde" itemValue="Inde" />
+                            </b:selectOneMenu>
+                        </h:panelGrid>
+                        
+                        <h:panelGrid columns="2">
+                            <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:-15px;" value="Couleur des yeux"></h:outputText>
+                            <b:selectOneMenu  style="margin-left:52px !important; width:250%;" value="#{totalUser.uneInfo.eyecolor}">
+                                <f:selectItem itemLabel="Marron" itemValue="Marron" />
+                                <f:selectItem itemLabel="Bleu" itemValue="Bleu" />
+                                <f:selectItem itemLabel="Vert" itemValue="Vert" />
+                                <f:selectItem itemLabel="Vairon" itemValue="Vairon" />
+                            </b:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:-15px;" value="Couleur des cheveux"></h:outputText>
+                            <b:selectOneMenu  style="margin-left:30px !important; width:286%;" value="#{totalUser.uneInfo.haircolor}">
+                                <f:selectItem itemLabel="Blond" itemValue="Blond" />
+                                <f:selectItem itemLabel="Chatain" itemValue="Chatain" />
+                                <f:selectItem itemLabel="Noir" itemValue="Noir" />
+                                <f:selectItem itemLabel="Bleu" itemValue="Bleu" />
+                                <f:selectItem itemLabel="Vert" itemValue="Vert" />
+                                <f:selectItem itemLabel="Roux" itemValue="Roux" />
+                                <f:selectItem itemLabel="Chauve" itemValue="Chauve" />
+                            </b:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:outputText style="display:inline-block;margin-left:-15px;margin-bottom:15px;" value="Poids"></h:outputText>
+                            <b:selectOneMenu  style="margin-left:129px !important; width:182%;" value="#{totalUser.uneInfo.weight}">
+                                <f:selectItems value="#{listBean.weightList}" var="w" 
+                                               itemLabel="#{w}" itemValue="#{w}" />
+                            </b:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:-15px;" value="Nationalité"></h:outputText>
+                            <b:selectOneMenu  style="margin-left:97px !important; width:156%;" value="#{totalUser.uneInfo.nationality}">
+                                <f:selectItem itemLabel="Europeene" itemValue="Europeene" />
+                                <f:selectItem itemLabel="Africaine" itemValue="Africaine" />
+                                <f:selectItem itemLabel="Asiatique" itemValue="Asiatique" />
+                                <f:selectItem itemLabel="Arabe" itemValue="Arabe" />
+                                <f:selectItem itemLabel="Sud Amerique" itemValue="Sud Amerique" />
+                            </b:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3">
+                            <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:-15px; margin-right:132px;" value="Taille"></h:outputText>
+                            <b:inputText id="meters" style="width:83%;margin-right:120px;" value="#{totalUser.uneInfo.metres}"  placeholder="Mètres">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="arrows-v"/>
+                                </f:facet>
+                                <p:message for="meters"></p:message>
+                            </b:inputText>
+                            <b:inputText id="centimeters" style="width:122%;" value="#{totalUser.uneInfo.centimetres}"  placeholder="Centimetres">
+                                <f:facet name="prepend">
+                                    <b:iconAwesome name="arrows-v"/>
+                                </f:facet>
+                                <p:message for="centimeters"></p:message>
+                            </b:inputText>
+                        </h:panelGrid>
+                        <b:selectBooleanCheckbox style="margin-bottom:0 !important;" value="#{totalUser.uneInfo.alcoholChecked}" caption="J'aime boire à l'occasion"/>
+                        <b:selectBooleanCheckbox style="margin-bottom:0 !important;" value="#{totalUser.uneInfo.tobaccoChecked}" caption="Je fume une cigarette de temps à autre"/>
+                        <b:selectBooleanCheckbox style="margin-bottom:0 !important;" value="#{totalUser.uneInfo.drugsChecked}" caption="Je fume autre chose qu'une cigarette de temps à autre"/>
+                        <b:commandButton action="#{totalUser.toggleEtapes(true, false)}"  style="width:112%; margin-left:-15px;" id="prev2" look="success" iconAwesome="chevron-left" iconAlign="left" value="Étape 2"/>
+                        <b:commandButton action='#{totalUser.action()}' style="width:112%; margin-left:-15px; margin-top:15px;" look="primary" value="Je m'inscris"/>
+                    </h:form>
+                    
+                </b:container>
+            </b:well>
+        </b:container>
+    </h:body>
+    <script>
+        var low = document.getElementById("low");
+        var high = document.getElementById("high");
+        var cmdhigh = document.getElementsByClassName("cmdhigh")[0];
+        var cmdlow = document.getElementsByClassName("cmdlow")[0];
+        var man = document.getElementsByClassName("man")[0];
+        var woman = document.getElementsByClassName("woman")[0];
+        var next1 = document.getElementById("firstform:next1");
+        var prev1 = document.getElementById("secondform:prev1");
+        var prev2 = document.getElementById("thirdform:prev2");
+        var next2 = document.getElementById("secondform:next2");
+        var firstform = document.getElementById("firstform");
+        var secondform = document.getElementById("secondform");
+        var thirdform = document.getElementById("thirdform");
+        var pageTitle = document.getElementById("pageTitle");
+
+        cmdhigh.onclick = function () {
+            high.classList.add("selected");
+            low.classList.remove("selected");
+        };
+        
+        cmdlow.onclick = function () {
+            low.classList.add("selected");
+            high.classList.remove("selected");
+        };
+
+        man.onclick = function () {
+            this.classList.add("selectedman");
+            woman.classList.remove("selectedwoman");
+        };
+
+        woman.onclick = function () {
+            this.classList.add("selectedwoman");
+            man.classList.remove("selectedman");
+        };
+        
+        next1.onclick = function(){
+            
+            pageTitle.innerHTML = "Rejoignez des millions de célibataire";
+            
+        }
+        
+        prev1.onclick = function(){
+            
+            pageTitle.innerHTML = "Devenez membre dès maintenant";
+           
+        }
+        
+        next2.onclick = function(){
+            
+            pageTitle.innerHTML = "Trouvez votre âme soeur";
+            
+        }
+        
+        prev2.onclick = function(){
+            
+            pageTitle.innerHTML = "Rejoignez des millions de célibataire";
+            
+        }
+    </script>
+
+</html>

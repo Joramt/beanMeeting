@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>LottoDating</title>
+            </f:facet>
+            <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/images/favicon.ico"/>
+        </h:head>            
+        <h:body style="padding-top: 50px; padding-bottom: 20px;">         
+            <!--MENU-->
+            <ui:include src="menu.xhtml" />
+            <!--FIN MENU-->
+            <b:container>
+                <p:growl showDetail="true" />
+                <b:well>
+                    <b:row>
+                        <!--Information General-->
+                        <b:panel title="Information General" look="warning">
+                            <h:form>
+                                <b:panelGrid colSpans="2,10">
+                                    <h:outputLabel for="alias" value="Alias:" />
+                                    <p:inplace id="alias" editor="true">
+                                        <p:inputText value="#{usersMB.currentUser.nickname}" required="true"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="password" value="Password:" />
+                                    <p:inplace id="password" editor="true">
+                                        <p:inputText value="#{usersMB.currentUser.pwd}" type="password" required="true"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="prenom" value="Prenom:" />
+                                    <p:inplace id="prenom" editor="true">
+                                        <p:inputText validator="firstnameValidator" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" value="#{usersMB.currentUser.firstname}"  placeholder="Prenom"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="nom" value="Nom:" />
+                                    <p:inplace id="nom" editor="true">
+                                        <p:inputText validator="fnamevalidator" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" value="#{usersMB.currentUser.familyname}"  placeholder="Nom"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="genre" value="Genre:" />
+                                    <p:inplace id="genre" effect="none" editor="true">
+                                        <h:selectOneMenu value="#{usersMB.currentUser.gender}">
+                                            <f:selectItem itemLabel="Male" itemValue="m" />
+                                            <f:selectItem itemLabel="Female" itemValue="f" />
+                                        </h:selectOneMenu>
+                                    </p:inplace>
+                                    <h:outputLabel for="email" value="Courriel:" />
+                                    <p:inplace id="email" editor="true">
+                                        <p:inputText validator="emailValidator" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" value="#{usersMB.currentUser.email}"  placeholder="Courriel"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="membership" value="Membership:" />
+                                    <p:inplace id="membership" effect="none" editor="true">
+                                        <f:facet name="output">
+                                            #{usersMB.currentUser.membership}
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <h:selectBooleanCheckbox value="#{usersMB.currentUser.membership}"/>
+                                        </f:facet>
+                                    </p:inplace>
+                                    <h:outputLabel for="mailAvert" value="Avertisement par courriel:" />
+                                    <p:inplace id="mailAvert" effect="none" editor="true">
+                                        <f:facet name="output">
+                                            #{usersMB.currentUser.avertMail}
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <h:selectBooleanCheckbox value="#{usersMB.currentUser.avertMail}"/>
+                                        </f:facet>
+                                    </p:inplace>
+                                    <!--TODO:birthday-->
+                                </b:panelGrid>
+                                <b:commandButton value="Accepter" action="#{usersMB.updateUser()}" look="warning" />
+                            </h:form>
+                        </b:panel>
+                        <!--FIN General-->
+                        <!--Photos-->
+                        <b:panel title="Photos" look="warning">
+                            <b:row>
+                                <ui:repeat value="#{usersMB.getPhotosByUserID(usersMB.currentUser.iduser)}" var="image">
+                                    <!--Photo-->
+                                    <b:column col-xs="6" col-md="3">
+                                        <b:thumbnail>                
+                                            <b:label text="Principale" severity="info" rendered="#{image.profile}"/>
+                                            <b:label text="Secundaire" severity="warning" rendered="#{!image.profile}"/>
+                                            <h:graphicImage value="images/#{image.photopath}" alt="logo" style="width:100%; height:200px;"/>
+                                            <f:facet name="caption">
+                                                <h:form>
+                                                    <b:commandButton value="" action="#{usersMB.setImage(image)}" iconAwesome="check" rendered="#{!image.profile}"></b:commandButton>
+                                                    <b:commandButton value="" action="#{usersMB.deleteImage(image)}" iconAwesome="trash" rendered="#{!image.profile}"></b:commandButton>
+                                                </h:form>
+                                            </f:facet>
+                                        </b:thumbnail>                     
+                                    </b:column>
+                                    <!--Fin Photo-->
+                                </ui:repeat>
+                            </b:row>
+                            <b:row>
+                                <b:column col-xs="12" col-md="12">
+                                    <h4>Ajouter Photos</h4>
+                                    <h:form>
+                                        <p:fileUpload id="fileUploadWidgetVar" fileUploadListener="#{usersMB.addImage}" mode="advanced" dragDropSupport="true"
+                                                      sizeLimit="1000000" fileLimit="1" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="@all" rendered="#{usersMB.checkLimit()}"/>
+                                    </h:form>                       
+                                </b:column>
+                            </b:row>
+                        </b:panel>
+                        <!--FIN Photos-->                        
+<!--                        Information Addtionnel
+                        <b:panel title="Information Additionel" look="warning">
+                            <h:form>
+                                <b:panelGrid colSpans="2,10">
+                                    <h:outputLabel for="alias" value="Alias:" />
+                                    <p:inplace id="alias" editor="true">
+                                        <p:inputText value="#{usersMB.currentUser.nickname}" required="true"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="password" value="Password:" />
+                                    <p:inplace id="password" editor="true">
+                                        <p:inputText value="#{usersMB.currentUser.pwd}" type="password" required="true"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="prenom" value="Prenom:" />
+                                    <p:inplace id="prenom" editor="true">
+                                        <p:inputText validator="firstnameValidator" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" value="#{usersMB.currentUser.firstname}"  placeholder="Prenom"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="nom" value="Nom:" />
+                                    <p:inplace id="nom" editor="true">
+                                        <p:inputText validator="fnamevalidator" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" value="#{usersMB.currentUser.familyname}"  placeholder="Nom"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="genre" value="Genre:" />
+                                    <p:inplace id="genre" effect="none" editor="true">
+                                        <h:selectOneMenu value="#{usersMB.currentUser.gender}">
+                                            <f:selectItem itemLabel="Male" itemValue="m" />
+                                            <f:selectItem itemLabel="Female" itemValue="f" />
+                                        </h:selectOneMenu>
+                                    </p:inplace>
+                                    <h:outputLabel for="email" value="Courriel:" />
+                                    <p:inplace id="email" editor="true">
+                                        <p:inputText validator="emailValidator" required="true" requiredMessage="Ce champ est obligatoire et doit contenir 2 à 20 caractères" value="#{usersMB.currentUser.email}"  placeholder="Courriel"/>
+                                    </p:inplace>
+                                    <h:outputLabel for="membership" value="Membership:" />
+                                    <p:inplace id="membership" effect="none" editor="true">
+                                        <f:facet name="output">
+                                            #{usersMB.currentUser.membership}
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <h:selectBooleanCheckbox value="#{usersMB.currentUser.membership}"/>
+                                        </f:facet>
+                                    </p:inplace>
+                                    <h:outputLabel for="alcohol" value="Alcohol:" />
+                                    <p:inplace id="mailAvert" effect="none" editor="true">
+                                        <f:facet name="output">
+                                            #{usersMB.currentUser.avertMail}
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <h:selectBooleanCheckbox value="#{usersMB.currentUser.avertMail}"/>
+                                        </f:facet>
+                                    </p:inplace>
+                                    TODO:birthday
+                                </b:panelGrid>
+                            </h:form>
+                        </b:panel>-->
+                        <!--FIN additionel-->
+                    </b:row>                    
+                </b:well>
+            </b:container>
+        </h:body>
+    </f:view>
+</html>
+
+<!--userid, eyecolor, haircolor, size, weight, nationality, drugs, tobacco, alcohol, userid, id-->

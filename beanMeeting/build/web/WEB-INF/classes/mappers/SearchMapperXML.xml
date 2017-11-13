@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mappers.SearchMapperXML" >
+    <select id="getDynamic" parameterType="SearchMB" resultType="Integer">
+        SELECT userid FROM userinfo JOIN user on userinfo.userid = user.iduser 
+        <where>
+            <if test="true">
+                AND drugs=#{drugs} AND alcohol=#{alcohol} AND tobacco=#{tobacco} 
+            </if>
+            <if test="sizemin > 0 &amp;&amp; sizemax == 0">
+                AND size >= #{sizemin}
+            </if>
+            <if test="sizemax > 0 &amp;&amp; sizemin == 0">
+                AND size &lt;= #{sizemax}
+            </if>
+            <if test="sizemax > 0 &amp;&amp; sizemin > 0">
+                AND size BETWEEN #{sizemin} AND #{sizemax}
+            </if>
+            <if test="weightmin > 0 &amp;&amp; weightmax == 0">
+                AND weight >= #{weightmin}
+            </if>
+            <if test="weightmax > 0 &amp;&amp; weightmin == 0">
+                AND weight =&lt; #{weightmax}
+            </if>
+            <if test="weightmax > 0 &amp;&amp; weightmin > 0">
+                AND weight BETWEEN #{weightmin} AND #{weightmax}
+            </if>
+            <if test="eyecolor != null">
+                AND eyecolor LIKE = #{eyecolor} 
+            </if>
+            <if test="nationality != null">
+                AND nationality =  #{nationality}
+            </if>
+            <if test="haircolor != null">
+                AND haircolor = #{haircolor}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <b:navBar id="menu" brand="LottoDating" brandHref="/TpFinal" brandImg="images\logo.png" inverse="true" fixed="top">                            
+        <b:navbarLinks>                 
+            <b:navLink value="" href="/" iconAwesome="home"></b:navLink>
+            <b:navLink value="#{msg.menuOnline} (#{statusMB.numOnline(usersMB.currentUser)})" href="online.xhtml"></b:navLink>
+            <b:navLink value="#{msg.menuFavourites} (#{usersMB.numFavoris})" rendered="#{usersMB.isConnected()}" href="favoris.xhtml" iconAwesome="star"></b:navLink>
+            <b:navLink value="#{msg.menuWinks} (#{usersMB.numBisous})" rendered="#{usersMB.isConnected()}" href="wink.xhtml" iconAwesome="heart"></b:navLink>
+            <b:navLink value="#{msg.menuSearch}" rendered="#{usersMB.isConnected()}" href="search.xhtml" iconAwesome="search"></b:navLink>
+            <b:navLink value="#{msg.menuMail} (#{usersMB.numMessage})" rendered="#{usersMB.isConnected()}" href="courriel.xhtml" iconAwesome="envelope"></b:navLink>            
+        </b:navbarLinks>
+        <!--Utilisateur-->
+        <b:navbarLinks pull="right" rendered="#{usersMB.isConnected()}">
+                    <b:dropMenu value="#{usersMB.currentUser.nickname}" >
+                            <b:navLink value="#{msg.menuProfile}" href="myProfile.xhtml" rendered="#{usersMB.isConnected()}" iconAwesome="user"></b:navLink>
+                            <b:navLink value="#{msg.editionProfile}" href="myProfile.xhtml" iconAwesome="edit"></b:navLink>
+                            <h:form><b:commandButton value="#{msg.passToPremium}" action='#{usersMB.changeToPremium()}' iconAwesome="glass" rendered="#{!usersMB.currentUser.estPremium()}" style="border-color: white;"></b:commandButton></h:form>
+                            <h:form><b:commandButton value="#{msg.logout}" action='#{usersMB.disconnect()}' iconAwesome="cog" style="border-color: white;"></b:commandButton></h:form>
+                    </b:dropMenu>
+        </b:navbarLinks>
+        <!--FIN Utilisateur-->
+        <!--Connexion-->
+        <h:form styleClass="navbar-form navbar-right" rendered="#{!usersMB.isConnected()}">
+            <div class="form-group">
+                <b:inputText id="connectnickname" placeholder="#{msg.user}" value="#{usersMB.nickname}" fieldSize="sm">
+                <f:validator validatorId="connectNickname" for="connectnickname"/>
+                   
+                </b:inputText>
+                <h:panelGroup style="display:none;" styleClass="test">
+                <p:message for="connectnickname"></p:message>
+                </h:panelGroup>
+            </div>
+            <div class="form-group">
+                <b:inputText placeholder="#{msg.password}" type="password" value="#{usersMB.pwd}" fieldSize="sm"/>
+            </div> 
+            <p:spacer width="10"></p:spacer>
+            <b:commandButton action="#{usersMB.connect()}" value="#{msg.login}" look="success" iconAwesome="chevron-right" iconAlign="right"/>
+            <p:spacer width="10"></p:spacer>
+            <b:commandButton action="toRegister" value="#{msg.register}" look="primary" iconAwesome="chevron-right" iconAlign="right"/>
+        </h:form>
+        <!--FIN Connexion-->
+        <!--Langue-->
+        <h:form styleClass="navbar-form navbar-right">
+            <b:commandButton id="change" value="#{langueMB.locale}" action="#{langueMB.changeLanguage}" iconAwesome="" look="info" size="mini"/>
+        </h:form>
+        <!--FIN Langue-->
+    </b:navBar>
+</html>

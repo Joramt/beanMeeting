@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+        <ui:composition>
+            <b:container>
+                <b:well>
+                    <b:row>              
+                        <p:growl id="winks" showDetail="true" />
+                        <ui:repeat value="#{listUsers}" var="user">
+                            <!--Thumbnail-->
+                            <b:column col-xs="6" col-md="3" rendered="#{usersMB.isNotMe(user.iduser)}">
+                                <b:thumbnail class="toto">                
+                                    <b:label text="Online" severity="success" rendered="#{statusMB.isOnline(user.iduser)}"/>
+                                    <b:label text="Offline" severity="danger" rendered="#{statusMB.isOffline(user.iduser)}"/>
+                                    <b:label text="#{statusMB.distance(usersMB.currentUser.iduser, user.iduser)}" severity="warning" rendered="#{statusMB.isLocated(user.iduser)}"/>
+                                    <h:form>
+                                        <h:commandLink action="#{usersMB.toProfile(user)}"> 
+                                            <h:graphicImage value="images/#{user.photopath}" alt="#{user.photopath}" style="width:100%; height:150px;"/>
+                                        </h:commandLink>
+                                    </h:form>
+                                    <f:facet name="caption">
+                                        <h3>#{user.nickname}</h3>
+                                        <h:form rendered="#{usersMB.isConnected()}">
+                                            <b:commandButton action="#{usersMB.toMessage(user)}" value=""  iconAwesome="envelope" rendered="#{usersMB.currentUser.estPremium()}">  
+                                            </b:commandButton>
+                                            <b:commandButton action="#{usersMB.addRemoveFavorite(user)}" value=""  iconAwesome="#{usersMB.isFavorite(user)}" rendered="#{usersMB.currentUser.estPremium()}">  
+                                            </b:commandButton>
+                                            <b:commandButton action="#{usersMB.sendWink(user)}" value=""  iconAwesome="heart">  
+                                            </b:commandButton>
+                                        </h:form>
+                                        <p> </p>
+                                        <p>#{msg.age}: #{user.getAge()}</p>
+                                        <p>#{msg.genre}: #{user.getGender()}</p>
+                                        <h:form>
+                                            <p:growl id="messages" showDetail="true" /> <!-- pour montrer le facemessages autohide -->
+                                            Rating: #{usersMB.ratingValue(user)} / #{usersMB.votes(user)} votes
+                                            <p:rating value="#{usersMB.rating}" rendered="#{usersMB.isConnected()}">
+                                                
+                                                <p:ajax event="rate" listener="#{usersMB.addVote(user)}" update="@all" />
+                                            </p:rating>
+                                        </h:form>
+                                        <p> </p>
+                                    </f:facet>
+                                </b:thumbnail>
+                                <h:form>
+                                    <b:commandButton action="#{usersMB.deleteWink(user)}" value="" iconAwesome="trash" rendered="#{isWink}"/>
+                                </h:form>
+                            </b:column>
+                            <!--FIN Thumbnail-->
+                        </ui:repeat>
+                    </b:row>
+                </b:well>
+            </b:container>
+        </ui:composition>
+    </body>
+</html>

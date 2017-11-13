@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+>
+    <h:head>
+        <title>Facelet Title</title>
+        <style>
+            .chck > tbody > tr > td > div.checkbox{
+                margin-bottom: 0px;
+                margin-top: 0px;
+            }
+            #winks_container.ui-growl {
+                top:60px;
+            }
+            
+        </style>
+    </h:head>
+    <h:body style="padding-top: 50px; padding-bottom: 20px;">
+        <h:messages globalOnly="false" style="display:none;"></h:messages>
+        <ui:include src="menu.xhtml" />
+        <b:container>
+            <b:well>
+                
+                <h:form rendered="true">
+                    <h2 style='text-align:center'>#{searchMB.titre}</h2>
+
+                    <h:panelGrid columns="4" style='margin-left:21.5%;'>
+                        <h:outputText style="display:inline-block;margin-bottom: 15px; margin-left:30px; margin-right:86px;" value="Pays"></h:outputText>
+                        <b:selectOneMenu  style="width:100%; margin-right:38px;" value="#{searchMB.country}">
+                            <f:selectItem itemLabel="Peu importe" itemValue="" />
+                            <f:selectItem itemLabel="Canada" itemValue="Canada" />
+                            <f:selectItem itemLabel="France" itemValue="France" />
+                            <f:selectItem itemLabel="USA" itemValue="USA" />
+                            <f:selectItem itemLabel="Mexique" itemValue="Mexique" />
+                            <f:selectItem itemLabel="Chine" itemValue="Chine" />
+                            <f:selectItem itemLabel="Irlande" itemValue="Irlande" />
+                            <f:selectItem itemLabel="Japon" itemValue="Japon" />
+                            <f:selectItem itemLabel="Inde" itemValue="Inde" />
+                        </b:selectOneMenu>
+
+                        <h:outputText style="display:inline-block;margin-bottom: 15px; margin-left:30px; margin-right:38px;" value="Couleur des yeux"></h:outputText>
+                        <b:selectOneMenu  style=" width:100%;" value="#{searchMB.eyecolor}">
+                            <f:selectItem itemLabel="Peu importe" itemValue="" />
+                            <f:selectItem itemLabel="Marron" itemValue="Marron" />
+                            <f:selectItem itemLabel="Bleu" itemValue="Bleu" />
+                            <f:selectItem itemLabel="Vert" itemValue="Vert" />
+                            <f:selectItem itemLabel="Vairon" itemValue="Vairon" />
+                        </b:selectOneMenu>
+
+
+                    </h:panelGrid>
+                    <h:panelGrid style='margin-left:21.5%;' columns="4">
+                        <h:outputText style="display:inline-block;margin-left:30px;margin-bottom:15px; margin-right:15px;" value="Poids inférieur à "></h:outputText>
+                        <b:selectOneMenu  style="width:117%;" value="#{searchMB.weightmax}">
+                            <f:selectItems value="#{listBean.weightList}" var="w" 
+                                           itemLabel="#{w}" itemValue="#{w}" />
+                        </b:selectOneMenu>
+                        <h:outputText style="display:inline-block;margin-left:54px;margin-bottom:15px; margin-right:15px;" value="et supérieur à "></h:outputText>
+                        <b:selectOneMenu  style="width:100%;" value="#{searchMB.weightmin}">
+                            <f:selectItems value="#{listBean.weightList}" var="w" 
+                                           itemLabel="#{w}" itemValue="#{w}" />
+                        </b:selectOneMenu>
+                        <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:30px;" value="Nationalité"></h:outputText>
+                        <b:selectOneMenu  style="width:117%;" value="#{searchMB.nationality}">
+                            <f:selectItem itemLabel="Peu importe" itemValue="" />
+                            <f:selectItem itemLabel="Europeene" itemValue="Europeene" />
+                            <f:selectItem itemLabel="Africaine" itemValue="Africaine" />
+                            <f:selectItem itemLabel="Asiatique" itemValue="Asiatique" />
+                            <f:selectItem itemLabel="Arabe" itemValue="Arabe" />
+                                <f:selectItem itemLabel="Sud Amerique" itemValue="Sud Amerique" />
+                        </b:selectOneMenu>
+                        <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:54px; margin-right:15px;" value="Couleur des cheveux"></h:outputText>
+                        <b:selectOneMenu  style="width:100%;" value="#{searchMB.haircolor}">
+                            <f:selectItem itemLabel="Peu importe" itemValue="" />
+                            <f:selectItem itemLabel="Blond" itemValue="Blond" />
+                            <f:selectItem itemLabel="Chatain" itemValue="Chatain" />
+                            <f:selectItem itemLabel="Noir" itemValue="Noir" />
+                            <f:selectItem itemLabel="Bleu" itemValue="Bleu" />
+                            <f:selectItem itemLabel="Vert" itemValue="Vert" />
+                            <f:selectItem itemLabel="Roux" itemValue="Roux" />
+                            <f:selectItem itemLabel="Chauve" itemValue="Chauve" />
+                        </b:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid style='margin-left:21.5%;' columns="3">
+                        <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:30px; margin-right:15px;" value="Taille inférieur à"></h:outputText>
+                        <b:inputText converterMessage="Seulement les entiers sont acceptés" id="meters" style="width:93%;" value="#{searchMB.metresmax}"  placeholder="Mètres">
+                            <f:facet name="prepend">
+                                <b:iconAwesome name="arrows-v"/>
+                                <f:convertNumber integerOnly="true" />
+                            </f:facet>
+                            <p:message for="meters"></p:message>
+                        </b:inputText>
+                        <b:inputText converterMessage="Seulement les entiers sont acceptés" id="centimeters" style="width:108%;" value="#{searchMB.centimetresmax}"  placeholder="Centimetres">
+                            <f:facet name="prepend">
+                                <b:iconAwesome name="arrows-v"/>
+                                <f:convertNumber integerOnly="true" />
+                            </f:facet>
+                            <p:message for="centimeters"></p:message>
+                        </b:inputText>
+                        <h:outputText style="display:inline-block;margin-bottom: 15px;margin-left:30px; margin-right:15px;" value="et supérieur à"></h:outputText>
+                        <b:inputText converterMessage="Seulement les entiers sont acceptés" id="infmeters" style="width:93%;" value="#{searchMB.metresmin}"  placeholder="Mètres">
+                            <f:facet name="prepend">
+                                <b:iconAwesome name="arrows-v"/>
+                                <f:convertNumber integerOnly="true" />
+                            </f:facet>
+                            <p:message rendered="false" for="infmeters"></p:message>
+                        </b:inputText>
+                        <b:inputText converterMessage="Seulement les entiers sont acceptés" id="infcentimeters" style="width:108%;" value="#{searchMB.centimetresmin}"  placeholder="Centimetres">
+                            <f:facet name="prepend">
+                                <b:iconAwesome name="arrows-v"/>
+                                <f:convertNumber integerOnly="true" />
+                            </f:facet>
+                            <p:message  id="centimetersx" for="infcentimeters"></p:message>
+                        </b:inputText>
+                    </h:panelGrid>
+                    <h:panelGrid styleClass="chck" id='chk' style='margin:0 auto; margin-left:46%;' columns='1'>
+                        <b:selectBooleanCheckbox style="margin-bottom:0 !important;" value="#{searchMB.alcoholChecked}" caption="Buveur occasionnel"/>
+                        <b:selectBooleanCheckbox style="margin-bottom:0 !important;" value="#{searchMB.tobaccoChecked}" caption="Fumeur occasionnel"/>
+                        <b:selectBooleanCheckbox style="margin-bottom:0 !important;" value="#{searchMB.drugsChecked}" caption="Fumeur de ganja"/>
+                    </h:panelGrid>
+                    <b:commandButton iconAwesome="search" action='#{searchMB.action()}' style="width:53%; margin-left:24.7%; margin-top:15px;" look="primary" value="Recherche"/>
+                </h:form>
+            </b:well>
+
+
+            <!--Thumbnails-->
+            <ui:include src="thumbnails.xhtml">
+                <ui:param name="listUsers" value="#{searchMB.lesUsers}"></ui:param>
+                <ui:param name="isWink" value="false"></ui:param>
+            </ui:include>                
+            <!--FIN Thumbnails-->
+        </b:container>        
+
+    </h:body>
+</html>
+
